@@ -36,7 +36,7 @@
 			this.Name = Name;
 			this.DOB = DOB;
 			this.DOD = DOD;
-			this.Children = [];
+			this.Parents = [];
 
 		}
 	}
@@ -47,27 +47,51 @@
 		let DOB = document.getElementById("DOBBox").value;
 		let DOD = document.getElementById("DODBox").value;
 		let Parent = document.getElementById("Parent").value; //We search if the parent exists later
-		DisplayTree(Name, DOB, DOD);
+		DisplayTree(Name, DOB, DOD, Parent);
 	})
-	async function DisplayTree(Name, DOB, DOD)
+	async function DisplayTree(Name, DOB, DOD, Parent)
 	{
 		let Human = new Person(Name, DOB, DOD);
-		console.log(Human);
-		AllMembers.push(Human);
-		arr = await ConvertToString(AllMembers);
-		let string = AllMembers.join(",<br>");
-		document.getElementById("Replace").innerHTML = string;
+		//console.log(Human);
+		
 		if (Parent !== "") {
 			console.log("Parent is not empty");
+			ParentName = await SearchForParent(AllMembers, Parent);
+			Human.Parents = "" + ParentName;
+			AllMembers.push(Human);
+			newArr = await ConvertToString(AllMembers);
+			let newString = newArr.join(",<br>");
+			document.getElementById("Replace").innerHTML = newString;
 		}
+		else
+		{
+			AllMembers.push(Human);
+			Human.Parent = "None";
+			arr = await ConvertToString(AllMembers);
+			let string = arr.join(",<br>");
+			document.getElementById("Replace").innerHTML = string;
+		}
+		
 	}
 	function ConvertToString(_AllMembers)
 	{
 		let values = [];
 		for(key of _AllMembers)
 		{
-			values.push(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD}`);
-			console.log(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD}`);
+			values.push(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parent}`);
+			//console.log(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parent}`);
+		}
+		return values;
+	}
+	function SearchForParent(_AllMembers, ParentName)
+	{
+		for(key of _AllMembers)
+		{
+			if(key.Name == ParentName)
+			{
+				return `${key.Name}`;
+				console.log("key " + key);
+			}
 		}
 	}
 </script>
