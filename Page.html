@@ -5,16 +5,19 @@
 	<title>Family Tree Creator</title>
 </head>
 <body>
-	<section class="Text-Boxes">
-		<label id="NameBox">Name:</label>
-	<input type="text" id="NameBox"> 
-		<label id="DOBBox">DOB:</label>
-	<input type="text" id="DOBBox"> 
-		<label id="DODBox">DOD(Date of death):</label>
-	<input type="text" id="DODBox"> 
-	</section>
-	<label id="SubmitBoxes">Click to Submit the above boxes</label>
-	<button class="Submit" id="SubmitBoxes">Submit</button>
+		<section class="Text-Boxes">
+				<label for="NameBox">Name:</label>
+			<input type="text" id="NameBox"> 
+				<label for="DOBBox">DOB:</label>
+			<input type="text" id="DOBBox"> 
+				<label for="DODBox">DOD(Date of death):</label>
+			<input type="text" id="DODBox">
+				<label for="Parent">Parent(leave completely blank if you havent put their parents):</label>
+			<input type="text" id="Parent"> 
+		</section>
+	<label for="SubmitBoxes">Click to Submit the above boxes</label>
+		<button class="Submit" id="SubmitBoxes">Submit</button>
+	<p id="Replace"></p>
 <script type="text/javascript">
 	/*
 	Prompt:
@@ -33,6 +36,38 @@
 			this.Name = Name;
 			this.DOB = DOB;
 			this.DOD = DOD;
+			this.Children = [];
+
+		}
+	}
+	AllMembers = []; //All Family members as Objects
+	SubmitBtn = document.querySelector(".Submit");
+	SubmitBtn.addEventListener("click", ()=> {
+		let Name = document.getElementById("NameBox").value;
+		let DOB = document.getElementById("DOBBox").value;
+		let DOD = document.getElementById("DODBox").value;
+		let Parent = document.getElementById("Parent").value; //We search if the parent exists later
+		DisplayTree(Name, DOB, DOD);
+	})
+	async function DisplayTree(Name, DOB, DOD)
+	{
+		let Human = new Person(Name, DOB, DOD);
+		console.log(Human);
+		AllMembers.push(Human);
+		arr = await ConvertToString(AllMembers);
+		let string = AllMembers.join(",<br>");
+		document.getElementById("Replace").innerHTML = string;
+		if (Parent !== "") {
+			console.log("Parent is not empty");
+		}
+	}
+	function ConvertToString(_AllMembers)
+	{
+		let values = [];
+		for(key of _AllMembers)
+		{
+			values.push(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD}`);
+			console.log(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD}`);
 		}
 	}
 </script>
