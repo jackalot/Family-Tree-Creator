@@ -57,7 +57,9 @@
 		if (Parent !== "") {
 			console.log("Parent is not empty");
 			ParentName = await SearchForParent(AllMembers, Parent);
-			Human.Parents = "" + ParentName;
+			console.log(ParentName);
+			Human.Parents = "" + ParentName.Name;
+			console.log(Human.Parents);
 			AllMembers.push(Human);
 			newArr = await ConvertToString(AllMembers);
 			let newString = newArr.join(",<br>");
@@ -66,7 +68,7 @@
 		else
 		{
 			AllMembers.push(Human);
-			Human.Parent = "None";
+			Human.Parents = "None";
 			arr = await ConvertToString(AllMembers);
 			let string = arr.join(",<br>");
 			document.getElementById("Replace").innerHTML = string;
@@ -78,21 +80,23 @@
 		let values = [];
 		for(key of _AllMembers)
 		{
-			values.push(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parent}`);
-			//console.log(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parent}`);
+			values.push(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parents}`);
+			//console.log(`Name:${key.Name}, DOB: ${key.DOB}, DOD: ${key.DOD} Parent: ${key.Parents}`);
 		}
 		return values;
 	}
 	function SearchForParent(_AllMembers, ParentName)
 	{
+		let sample; 
 		for(key of _AllMembers)
 		{
 			if(key.Name == ParentName)
 			{
-				return `${key.Name}`;
-				console.log("key " + key);
+				//console.log("SearchForParent")
+				sample = key;
 			}
 		}
+		return sample;
 	}
 </script>
 </body>
